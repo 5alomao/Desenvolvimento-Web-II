@@ -61,12 +61,12 @@ h4 {
   margin: 20px 0;
 }
 
-.inc-exp-container > div {
+.inc-exp-container>div {
   flex: 1;
   text-align: left;
 }
 
-.inc-exp-container > div:first-of-type {
+.inc-exp-container>div:first-of-type {
   border-bottom: 1px solid #dedede;
 }
 
@@ -123,22 +123,27 @@ input[type="number"] {
   background-color: #353535;
   color: #fff;
   transition: .5s ease-in-out;
-} 
+}
+
 .transacoes {
   list-style-type: none;
   padding: 0;
   margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
 }
 
 .transacoes li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #ffffff;
   box-shadow: var(--box-shadow);
   color: #212121;
-  display: flex;
-  justify-content: space-between;
   position: relative;
-  padding: 10px;
-  margin: 2px 30px 0px 0px;
+  margin: 10px 0;
+  width: 90%;
+  padding: 10px 5px;
   border-radius: 2px;
 }
 
@@ -151,16 +156,17 @@ input[type="number"] {
 }
 
 .delete-btn {
+  position: absolute;
+  top: 50%;
+  right: -15%;
+  height: 100%;
+  width: 40px;
   cursor: pointer;
   background-color: #ff5722;
   border: 0;
   color: #fff;
   font-size: 20px;
   line-height: 20px;
-  padding: 10px 10px;
-  position: absolute;
-  top: 50%;
-  right: -14%;
   transform: translate(-100%, -50%);
   opacity: 0;
   transition: opacity 0.3s ease;
