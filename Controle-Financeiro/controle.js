@@ -1,6 +1,8 @@
 const chave_transacoes_ls = "transacoes";
+const chave_id_ls = "id";
 
 const form = document.getElementById("form");
+const btnRemover = document.getElementsByClassName("delete-btn");
 
 const descInput = document.getElementById("descricao");
 const valueInput = document.getElementById("montante");
@@ -14,6 +16,15 @@ const despesaP = document.getElementById("din-negativo");
 const transacoesUL = document.getElementById("transacoes");
 
 let transacoesSalvas = null;
+let idSalvos = null;
+
+if (localStorage.getItem(chave_id_ls) != "") {
+  try {
+    idSalvos = JSON.parse(localStorage.getItem(chave_id_ls));
+  } catch (err) {
+    console.log("Erro:", err);
+  }
+}
 
 if (localStorage.getItem(chave_transacoes_ls) != "") {
   try {
@@ -23,11 +34,13 @@ if (localStorage.getItem(chave_transacoes_ls) != "") {
   }
 }
 
+if (idSalvos === null) {
+  idSalvos = [];
+}
+
 if (transacoesSalvas === null) {
   transacoesSalvas = [];
 }
-
-let transacaoID = transacoesSalvas.length;
 
 form.addEventListener("submit", (event) => {
   // Não submete o formulário - Retira funcionalidade padrão do elemento
@@ -58,7 +71,7 @@ form.addEventListener("submit", (event) => {
     alert("[ERRO] O campo de 'Entrada' deve ser escolhido!");
     return;
   }
-
+  let transacaoID = idSalvos.length;
   const transacao = {
     id: transacaoID,
     desc: descTransacao,
@@ -69,17 +82,49 @@ form.addEventListener("submit", (event) => {
   somaReceitaDespesa(transacao);
   addTransacaoAoDOM(transacao);
   // Adicionando ao vetor de transações
+  idSalvos.push(transacao.id);
+  localStorage.setItem(chave_id_ls, JSON.stringify(idSalvos));
+  console.log(idSalvos.length);
   transacoesSalvas.push(transacao);
-  transacaoID++;
   localStorage.setItem(chave_transacoes_ls, JSON.stringify(transacoesSalvas));
 });
+
+function setTitleColor(valorBalanco) {
+  if (parseFloat(valorBalanco) < 0) {
+    titleSaldo.style.color = "red";
+  } else if (parseFloat(valorBalanco) > 0) {
+    titleSaldo.style.color = "#2ecc71";
+  } else {
+    titleSaldo.style.color = "#e7e7e7";
+  }
+}
+
+function setTitleText(valorBalanco) {
+  if (parseFloat(valorBalanco) < 0) {
+    titleSaldo.innerHTML = `R$${valorBalanco.toFixed(2)}`;
+  } else if (parseFloat(valorBalanco) > 0) {
+    titleSaldo.innerHTML = `R$${valorBalanco.toFixed(2)}`;
+  } else {
+    titleSaldo.innerHTML = `R$0.00`;
+  }
+}
 
 function somaAoSaldo(transacao) {
   let valorBalanco = titleSaldo.innerHTML.trim();
   valorBalanco = valorBalanco.replace("R$", "");
   valorBalanco = parseFloat(valorBalanco);
   valorBalanco += transacao.valor;
-  titleSaldo.innerHTML = `R$${valorBalanco.toFixed(2)}`;
+  setTitleColor(valorBalanco);
+  setTitleText(valorBalanco);
+}
+
+function subtraiAoSaldo(transacao) {
+  let valorBalanco = titleSaldo.innerHTML.trim();
+  valorBalanco = valorBalanco.replace("R$", "");
+  valorBalanco = parseFloat(valorBalanco);
+  valorBalanco -= transacao.valor;
+  setTitleColor(valorBalanco);
+  setTitleText(valorBalanco);
 }
 
 function somaReceitaDespesa(transacao) {
@@ -91,19 +136,32 @@ function somaReceitaDespesa(transacao) {
   elemento.innerHTML = `${substituir}${valor.toFixed(2)}`;
 }
 
+function subtraiReceitaDespesa(transacao) {
+  const elemento = transacao.valor > 0 ? receitaP : despesaP;
+  const substituir = transacao.valor > 0 ? "+ R$" : "- R$";
+  let valor = elemento.innerHTML.replace(substituir, "");
+  valor = parseFloat(valor);
+  valor -= Math.abs(transacao.valor);
+  elemento.innerHTML = `${substituir}${valor.toFixed(2)}`;
+}
+
 function addTransacaoAoDOM(transacao) {
   const cssClass = transacao.valor > 0 ? "positivo" : "negativo";
   const currency = transacao.valor > 0 ? "+R$" : "-R$";
-  const liElementStr = `${transacao.desc} <span>${currency} ${Math.abs(
+  const liElementStr = `${transacao.id}:${
+    transacao.desc
+  } <span>${currency} ${Math.abs(
     transacao.valor
-  )}</span><button class="delete-btn" onclick="deletaTransacao(${
+  )}</span><button class="delete-btn" onclick="deletaTransacao('${
     transacao.id
-  })">X</button>`;
-
+  }')">X</button>`;
   const liElement = document.createElement("li");
+  liElement.setAttribute("data-id", transacao.id);
   liElement.innerHTML = liElementStr;
   liElement.classList.add(cssClass);
   transacoesUL.appendChild(liElement);
+  console.log("Elemento adicionado na UL");
+  console.log(transacoesSalvas);
   descInput.value = "";
   valueInput.value = "";
   for (radioIndex in sinalInput) {
@@ -115,17 +173,31 @@ function deletaTransacao(id) {
   const transacaoIndex = transacoesSalvas.findIndex(
     (transacao) => transacao.id == id
   );
-  transacoesSalvas.splice(transacaoIndex, 1);
-  localStorage.setItem(chave_transacoes_ls, JSON.stringify(transacoesSalvas));
-  carregarDados();
+
+  if (transacaoIndex === -1) {
+    console.log("Transação não encontrada");
+    return;
+  }
+
+  const liToRemove = document.querySelector(`li[data-id="${id}"]`);
+  if (liToRemove) {
+    liToRemove.remove();
+    subtraiAoSaldo(transacoesSalvas[transacaoIndex]);
+    subtraiReceitaDespesa(transacoesSalvas[transacaoIndex]);
+    console.log("Elemento <li> removido do DOM");
+    transacoesSalvas.splice(transacaoIndex, 1);
+    localStorage.setItem(chave_transacoes_ls, JSON.stringify(transacoesSalvas));
+    console.log("Elemento removido do LocalStorage");
+  } else {
+    console.log("Elemento <li> não encontrado no DOM");
+  }
 }
 
 function carregarDados() {
-  transacaoID = transacoesSalvas.length;
-  transacoesUL.innerHTML = "";
-  titleSaldo.innerHTML = "R$0.00";
-  receitaP.innerHTML = "+ R$0.00";
-  despesaP.innerHTML = "- R$0.00";
+  // transacoesUL.innerHTML = "";
+  // titleSaldo.innerHTML = "R$0.00";
+  // receitaP.innerHTML = "+ R$0.00";
+  // despesaP.innerHTML = "- R$0.00";
 
   for (transacao of transacoesSalvas) {
     somaAoSaldo(transacao);
@@ -135,5 +207,6 @@ function carregarDados() {
 }
 
 carregarDados();
-
 console.log(transacoesSalvas);
+console.log(idSalvos);
+localStorage.clear();
