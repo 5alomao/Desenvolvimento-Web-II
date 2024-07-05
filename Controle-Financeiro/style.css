@@ -1,32 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
 
-body {
-  background-color: #222;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 30vh;
-  max-height: 50vh;
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 2% 5%;
+  background-color: #222;
   font-family: "Varela Round", sans-serif;
   color: #e7e7e7;
 }
 
-.container {
+body main {
   display: grid;
   grid-template-columns: 1fr 1.5fr 2fr;
-  padding: 10px;
   gap: 10px;
-  width: 95vw;
-}
-
-h1 {
-  letter-spacing: 1px;
-  color: #ffffff;
 }
 
 .title {
-  color: #fff;
+  grid-column: 1/-1;
+}
+
+.title h1 {
+  text-align: center;
+  letter-spacing: 1px;
+  color: #ffffff;
+  padding: 1% 0;
+  margin-bottom: 1%;
 }
 
 h3 {
@@ -38,17 +40,26 @@ h3 {
   color: #757575;
 }
 
-.item {
+.item-box {
+  display: block;
+  overflow: hidden;
+  height: auto;
   padding: 15px;
   background-color: #9191918f;
   border-radius: 10px;
 }
 
-h4 {
+.item-title h4 {
   margin: 0;
   text-transform: uppercase;
   border-bottom: 1px solid #bbb;
   padding-bottom: 10px;
+}
+
+.item-title h1 {
+  padding: 10px 0;
+  font-size: 32px;
+  letter-spacing: 1px;
 }
 
 .inc-exp-container {
@@ -61,12 +72,12 @@ h4 {
   margin: 20px 0;
 }
 
-.inc-exp-container>div {
+.inc-exp-container > div {
   flex: 1;
   text-align: left;
 }
 
-.inc-exp-container>div:first-of-type {
+.inc-exp-container > div:first-of-type {
   border-bottom: 1px solid #dedede;
 }
 
@@ -100,9 +111,13 @@ input[type="number"] {
   width: 95%;
 }
 
+#P + label {
+  margin-right: 40px;
+}
+
 .btn {
   cursor: pointer;
-  background-color: #512da8;
+  background-color: #522da8;
   box-shadow: var(--box-shadow);
   color: #fff;
   border: 0;
@@ -112,6 +127,7 @@ input[type="number"] {
   padding: 10px;
   width: 50%;
   border-radius: 10px;
+  transition: background-color 0.5s;
 }
 
 .btn:focus,
@@ -120,17 +136,14 @@ input[type="number"] {
 }
 
 .btn:hover {
-  background-color: #353535;
+  background-color: #5c2bce;
   color: #fff;
-  transition: .5s ease-in-out;
 }
 
 .transacoes {
+  position: relative;
   list-style-type: none;
   padding: 0;
-  margin-bottom: 40px;
-  position: relative;
-  overflow: hidden;
 }
 
 .transacoes li {
@@ -140,7 +153,6 @@ input[type="number"] {
   background-color: #ffffff;
   box-shadow: var(--box-shadow);
   color: #212121;
-  position: relative;
   margin: 10px 0;
   width: 90%;
   padding: 10px 5px;
@@ -157,27 +169,25 @@ input[type="number"] {
 
 .delete-btn {
   position: absolute;
-  top: 50%;
-  right: -15%;
-  height: 100%;
+  right: 0;
   width: 40px;
-  cursor: pointer;
-  background-color: #ff5722;
+  height: 40px;
   border: 0;
+  background-color: #ff5722;
   color: #fff;
   font-size: 20px;
   line-height: 20px;
-  transform: translate(-100%, -50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.transacoes li:hover .delete-btn {
-  opacity: 1;
+.delete-btn:hover {
+  background-color: #c9360a;
 }
 
 @media screen and (max-width: 900px) {
-  .container {
+  
+  body main {
     grid-template-columns: 1fr;
   }
 }
