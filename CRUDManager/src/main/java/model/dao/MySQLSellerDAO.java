@@ -64,7 +64,7 @@ public class MySQLSellerDAO implements SellerDAO {
 		List<Seller> sellers = new ArrayList<Seller>();
 
 		// Declara uma instrução SQL
-		String sqlQuery = "select s.id as ID, s.name as Name, s.email as Email, s.fone as Fone, c.name as CompanyName from sellers s inner join companies c on s.company_id = c.id";
+		String sqlQuery = "select s.id as ID, s.name as Name, s.email as Email, s.fone as Fone, c.id as company_id from sellers s inner join companies c on s.company_id = c.id";
 
 		db.createStatement();
 
@@ -109,7 +109,7 @@ public class MySQLSellerDAO implements SellerDAO {
 
 		CompanyDAO companyDAO = DAOFactory.createDAO(CompanyDAO.class);
 
-		Company company = companyDAO.findById(db.getInt("id"));
+		Company company = companyDAO.findById(db.getInt("company_id"));
 
 		s.setCompany(company);
 
