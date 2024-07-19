@@ -46,7 +46,6 @@
 
 		<div id="list" class="row">
 			<div class="table-responsive col-md-12">
-
 				<table class="table table-striped table-hover" cellspacing="0"
 					cellpadding="0">
 
@@ -74,8 +73,31 @@
 						</c:forEach>
 					</tbody>
 				</table>
+			</div>
 
+			<div id="bottom" class="row">
+				<div class="col-md-12">
+					<ul class="pagination">
+						<li class="disabled"><a>&lt; Anterior</a></li>
+						<li class="disabled"><a>1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li class="next"><a href="#" rel="next">Próximo &gt;</a></li>
+					</ul>
+					<!-- /.pagination -->
+				</div>
 			</div>
 		</div>
+
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// fecha o alert após 3 segundos
+				setTimeout(function() {
+					$("#alert").slideUp(500);
+				}, 3000);
+			});
+		</script>
 </body>
 </html>
