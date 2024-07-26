@@ -71,7 +71,12 @@
 									href="${pageContext.request.contextPath}/seller/update?sellerId=${seller.getId()}">
 										<span class="glyphicon glyphicon-edit"></span>
 								</a></td>
-								<td>Excluir</td>
+								<td class="actions"><a
+									class="btn btn-danger btn-xs modal-remove"
+									data-seller-id="${seller.getId()}"
+									data-seller-name="${seller.getName()}" data-toggle="modal"
+									data-target="#delete-modal" href="#"><span
+										class="glyphicon glyphicon-trash"></span></a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -95,12 +100,28 @@
 		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript">
-			$(document).ready(function() {
-				// fecha o alert após 3 segundos
-				setTimeout(function() {
-					$("#alert").slideUp(500);
-				}, 3000);
-			});
+			$(document).ready(
+					function() {
+						// fecha o alert após 3 segundos
+						setTimeout(function() {
+							$("#alert").slideUp(500);
+						}, 3000);
+
+						// ao clicar no delete de algum post, pega o nome do usuário, 
+						// o id do usuário e a ação (delete) e envia para o modal 
+						$(".modal-remove").click(
+								function() {
+									var sellerName = $(this).attr(
+											'data-seller-name');
+									var sellerId = $(this).attr(
+											'data-seller-id');
+									$(".modal-body #hiddenValue").text(
+											"o vendedor '" + sellerName + "'");
+									$("#id").attr("value", sellerId);
+									$("#entityName").attr("value", sellerName);
+									$("#form").attr("action", "seller/delete");
+								})
+					});
 		</script>
 </body>
 </html>

@@ -100,16 +100,19 @@
 			        $("#alert").slideUp(500);
 			    }, 3000);
 			    
-			    // ao clicar no delete de algum post, pega o nome do usuário, 
-			    // o id do usuário e a ação (delete) e envia para o modal 
-			    $(".modal-remove").click(function () {
-		            var userName = $(this).attr('user-name');
-		            var userId = $(this).attr('user-id');
-		            $(".modal-body #hiddenValue").text("o usuário '"+userName+"'");
-		            $("#id").attr( "value", userId);
-		            $("#form").attr( "action","user/delete");
-		        })
-			});
+			    
+			// ao clicar no delete de algum post, pega o nome do usuário, 
+						// o id do usuário e a ação (delete) e envia para o modal 
+						$(".modal-remove").click(
+								function() {
+									var userName = $(this).attr('user-name');
+									var userId = $(this).attr('user-id');
+									$(".modal-body #hiddenValue").text(
+											"o usuário '" + userName + "'");
+									$("#id").attr("value", userId);
+									$("#form").attr("action", "user/delete");
+								})
+					});
 		</script>
 	</body>
 </html>

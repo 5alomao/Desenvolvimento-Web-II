@@ -17,7 +17,7 @@ import model.dao.DAOFactory;
 import model.dao.SellerDAO;
 
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = { "/sellers", "/seller/form", "/seller/insert", "/seller/update" })
+@WebServlet(urlPatterns = { "/sellers", "/seller/form", "/seller/insert", "/seller/update", "/seller/delete" })
 public class SellersController extends HttpServlet {
 
 	@Override
@@ -64,8 +64,32 @@ public class SellersController extends HttpServlet {
 			ControllerUtil.redirect(resp, req.getContextPath() + "/sellers");
 			break;
 		}
+		case "/crud-manager/seller/delete": {
+			deleteSeller(req);
+			ControllerUtil.redirect(resp, req.getContextPath() + "/sellers");
+			break;
+		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + action);
+		}
+	}
+
+	private void deleteSeller(HttpServletRequest req) {
+		String sellerIdStr = req.getParameter("id");
+		int sellerId = Integer.parseInt(sellerIdStr);
+
+		String sellerName = req.getParameter("entityName");
+
+		SellerDAO dao = DAOFactory.createDAO(SellerDAO.class);
+
+		try {
+			if (dao.delete(new Seller(sellerId))) {
+				ControllerUtil.sucessMessage(req, "Vendedor '" + sellerName + "' excluído com sucesso.");
+			} else {
+				ControllerUtil.errorMessage(req, "Vendedor '" + sellerName + "' não pode ser excluído.");
+			}
+		} catch (ModelException e) {
+			ControllerUtil.errorMessage(req, e.getMessage());
 		}
 	}
 
