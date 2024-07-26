@@ -67,7 +67,10 @@
 								<td>${seller.getEmail()}</td>
 								<td>${seller.getFone()}</td>
 								<td>${seller.getCompany().getName()}</td>
-								<td>Editar</td>
+								<td class="actions"><a class="btn btn-info btn-xs"
+									href="${pageContext.request.contextPath}/seller/update?sellerId=${seller.getId()}">
+										<span class="glyphicon glyphicon-edit"></span>
+								</a></td>
 								<td>Excluir</td>
 							</tr>
 						</c:forEach>

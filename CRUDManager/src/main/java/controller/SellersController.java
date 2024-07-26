@@ -17,7 +17,7 @@ import model.dao.DAOFactory;
 import model.dao.SellerDAO;
 
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = { "/sellers", "/seller/form", "/seller/insert" })
+@WebServlet(urlPatterns = { "/sellers", "/seller/form", "/seller/insert", "/seller/update" })
 public class SellersController extends HttpServlet {
 
 	@Override
@@ -28,6 +28,14 @@ public class SellersController extends HttpServlet {
 		switch (action) {
 		case "/crud-manager/seller/form": {
 			loadCompanies(req);
+			req.setAttribute("action", "insert");
+			ControllerUtil.forward(req, resp, "/form-seller.jsp");
+			break;
+		}
+		case "/crud-manager/seller/update": {
+			loadSeller(req);
+			loadCompanies(req);
+			req.setAttribute("action", "update");
 			ControllerUtil.forward(req, resp, "/form-seller.jsp");
 			break;
 		}
@@ -40,17 +48,6 @@ public class SellersController extends HttpServlet {
 		}
 	}
 
-	private void loadCompanies(HttpServletRequest req) {
-		CompanyDAO dao = DAOFactory.createDAO(CompanyDAO.class);
-		List<Company> companies = new ArrayList<>();
-		try {
-			companies = dao.listAll();
-		} catch (ModelException e) {
-			ControllerUtil.errorMessage(req, "Erro ao carregar as empresas.");
-		}
-		req.setAttribute("companies", companies);
-	}
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -58,7 +55,12 @@ public class SellersController extends HttpServlet {
 
 		switch (action) {
 		case "/crud-manager/seller/insert": {
-			insertSeller(req, resp);
+			insertSeller(req);
+			ControllerUtil.redirect(resp, req.getContextPath() + "/sellers");
+			break;
+		}
+		case "/crud-manager/seller/update": {
+			updateSeller(req);
 			ControllerUtil.redirect(resp, req.getContextPath() + "/sellers");
 			break;
 		}
@@ -67,18 +69,9 @@ public class SellersController extends HttpServlet {
 		}
 	}
 
-	private void insertSeller(HttpServletRequest req, HttpServletResponse resp) {
-		String sellerName = req.getParameter("seller_name");
-		String sellerEmail = req.getParameter("seller_email");
-		String sellerFone = req.getParameter("seller_fone");
-		String sellerCompany = req.getParameter("seller_company");
-		int sellerCompanyId = Integer.parseInt(sellerCompany);
+	private void insertSeller(HttpServletRequest req) {
 
-		Seller seller = new Seller();
-		seller.setName(sellerName);
-		seller.setEmail(sellerEmail);
-		seller.setFone(sellerFone);
-		seller.setCompany(new Company(sellerCompanyId));
+		Seller seller = createSeller(req, 0);
 
 		SellerDAO dao = DAOFactory.createDAO(SellerDAO.class);
 
@@ -89,8 +82,57 @@ public class SellersController extends HttpServlet {
 				ControllerUtil.errorMessage(req, "Vendedor " + seller.getName() + " não pode ser salvo.");
 		} catch (ModelException e) {
 			e.printStackTrace(); // log
-			ControllerUtil.errorMessage(req, sellerCompany);
+			ControllerUtil.errorMessage(req, e.getMessage());
 		}
+	}
+
+	private void updateSeller(HttpServletRequest req) {
+
+		String sellerIdStr = req.getParameter("seller_id");
+		int sellerId = Integer.parseInt(sellerIdStr);
+
+		Seller seller = createSeller(req, sellerId);
+
+		SellerDAO dao = DAOFactory.createDAO(SellerDAO.class);
+
+		try {
+			if (dao.update(seller))
+				ControllerUtil.sucessMessage(req, "Vendedor " + seller.getName() + " alterado com sucesso.");
+			else
+				ControllerUtil.errorMessage(req, "Vendedor " + seller.getName() + " não pode ser alterado.");
+		} catch (ModelException e) {
+			e.printStackTrace(); // log
+			ControllerUtil.errorMessage(req, e.getMessage());
+		}
+
+	}
+
+	private void loadSeller(HttpServletRequest req) {
+		String sellerIdStr = req.getParameter("sellerId");
+		int sellerId = Integer.parseInt(sellerIdStr);
+
+		SellerDAO dao = DAOFactory.createDAO(SellerDAO.class);
+
+		Seller seller = new Seller(0);
+
+		try {
+			seller = dao.findById(sellerId);
+		} catch (ModelException e) {
+			ControllerUtil.errorMessage(req, "Erro ao carregar vendedor para edição.");
+		}
+
+		req.setAttribute("sellerToEdit", seller);
+	}
+
+	private void loadCompanies(HttpServletRequest req) {
+		CompanyDAO dao = DAOFactory.createDAO(CompanyDAO.class);
+		List<Company> companies = new ArrayList<>();
+		try {
+			companies = dao.listAll();
+		} catch (ModelException e) {
+			ControllerUtil.errorMessage(req, "Erro ao carregar as empresas.");
+		}
+		req.setAttribute("companies", companies);
 	}
 
 	private void listSellers(HttpServletRequest req) {
@@ -106,6 +148,28 @@ public class SellersController extends HttpServlet {
 		}
 
 		req.setAttribute("sellers", sellers);
+	}
+
+	private Seller createSeller(HttpServletRequest req, int sellerId) {
+
+		String sellerName = req.getParameter("seller_name");
+		String sellerEmail = req.getParameter("seller_email");
+		String sellerFone = req.getParameter("seller_fone");
+		String sellerCompany = req.getParameter("seller_company");
+		int sellerCompanyId = Integer.parseInt(sellerCompany);
+
+		Seller seller;
+		if (sellerId == 0) {
+			seller = new Seller();
+		} else {
+			seller = new Seller(sellerId);
+		}
+		seller.setName(sellerName);
+		seller.setEmail(sellerEmail);
+		seller.setFone(sellerFone);
+		seller.setCompany(new Company(sellerCompanyId));
+
+		return seller;
 	}
 
 }
