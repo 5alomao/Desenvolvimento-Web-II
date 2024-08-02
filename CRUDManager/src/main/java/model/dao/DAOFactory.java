@@ -16,6 +16,7 @@ public class DAOFactory {
 		listDAOsInterfaces.put(UserDAO.class, new MySQLUserDAO());
 		listDAOsInterfaces.put(CompanyDAO.class, new MySQLCompanyDAO());
 		listDAOsInterfaces.put(SellerDAO.class, new MySQLSellerDAO());
+		listDAOsInterfaces.put(ChiefExecutiveOfficerDAO.class, new MySQLChiefExecutiveOfficerDAO());
 	}
 
 	@SuppressWarnings("unchecked")
