@@ -77,10 +77,10 @@
 
 			<div id="actions" class="row pull-right">
 				<div class="col-md-12">
-					<a href="${pageContext.request.contextPath}/sellers"
+					<a href="${pageContext.request.contextPath}/ceos"
 						class="btn btn-default">Cancelar</a>
 					<button type="submit" class="btn btn-primary">${action eq "insert" ? "Criar" : "Editar"}
-						Vendedor</button>
+						CEO</button>
 				</div>
 			</div>
 
