@@ -21,7 +21,7 @@
 
 			<div class="row">
 				<div class="form-group col-md-4">
-					<label for="content">Nome</label> <input type="text"
+					<label for="ceo_name">Nome</label> <input type="text"
 						class="form-control" id="ceo_name" name="ceo_name"
 						autofocus="autofocus" placeholder="Nome do CEO" required
 						oninvalid="this.setCustomValidity('Por favor, informe o Nome do CEO.')"
@@ -29,19 +29,21 @@
 				</div>
 
 				<div class="form-group col-md-4">
-					<label for="gender">Sexo</label> <select id="ceo_gender"
+					<label for="ceo_gender">Sexo</label> <select id="ceo_gender"
 						class="form-control selectpicker" name="ceo_gender" required
 						oninvalid="this.setCustomValidity('Por favor, informe o sexo')"
 						oninput="setCustomValidity('')">
-						<option value="" disabled ${notemptyceo ? "" : "selected"}>Selecione
+						<option value=""disabled ${notemptyceo ? "" : "selected"}>Selecione
 							o sexo</option>
-						<option value="F" ${ceoToEdit.getGender() == 'F' ? "selected" : ""}>Feminino</option>
-						<option value="M" ${ceoToEdit.getGender() == 'M' ? "selected" : ""}>Masculino</option>
+						<option value="F"
+							${ceoToEdit.getGender() == 'F' ? "selected" : ""}>Feminino</option>
+						<option value="M"
+							${ceoToEdit.getGender() == 'M' ? "selected" : ""}>Masculino</option>
 					</select>
 				</div>
 
 				<div class="form-group col-md-4">
-					<label for="content">Email</label> <input type="email"
+					<label for="ceo_email">Email</label> <input type="email"
 						class="form-control" id="ceo_email" name="ceo_email"
 						autofocus="autofocus" placeholder="Email do CEO" required
 						oninvalid="this.setCustomValidity('Por favor, informe o Email do CEO')"
@@ -49,7 +51,7 @@
 				</div>
 
 				<div class="form-group col-md-4">
-					<label for="content">Telefone</label> <input type="text"
+					<label for="ceo_fone">Telefone</label> <input type="text"
 						class="form-control" id="ceo_fone" name="ceo_fone"
 						autofocus="autofocus" placeholder="Telefone do CEO" required
 						oninvalid="this.setCustomValidity('Por favor, informe o Telefone do CEO')"
@@ -57,9 +59,8 @@
 				</div>
 
 				<div class="form-group col-md-6">
-					<label for="seller_company">Empresa</label> <select
-						id="ceo_company" class="form-control selectpicker"
-						name="ceo_company" required
+					<label for="ceo_company">Empresa</label> <select id="ceo_company"
+						class="form-control selectpicker" name="ceo_company" required
 						oninvalid="this.setCustomValidity('Por favor, informe a Empresa.')"
 						oninput="setCustomValidity('')">
 						<option value=""disabled ${notemptyceoToEdit ? "" : "selected"}>Selecione
