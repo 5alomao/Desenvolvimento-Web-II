@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import br.edu.ifsuldeminas.mch.webii.crudmanager.model.Address;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.model.User;
+import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.AddressRepository;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.UserRepository;
 import jakarta.transaction.Transactional;
 
@@ -14,6 +16,9 @@ public class InitializeDataBase implements CommandLineRunner {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private AddressRepository addressRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -26,6 +31,23 @@ public class InitializeDataBase implements CommandLineRunner {
 		leonardo.setName("Leonardo Paiva");
 		leonardo.setGender("M");
 		leonardo.setEmail("leonardo@gmail.com");
+
+		Address addressS = new Address();
+		addressS.setPlace("Rua XYZ, Bairro ZZZ");
+		addressS.setNumber(123);
+		addressS.setZipCode("XXXXX-XXX");
+
+		Address addressB = new Address();
+		addressB.setPlace("Rua ZYX, Bairro CCC");
+		addressB.setNumber(321);
+		addressB.setZipCode("XXXXX-XXX");
+
+		addressRepository.save(addressS);
+		addressRepository.save(addressB);
+		userRepository.flush();
+		
+		salomao.setAddress(addressS);
+		leonardo.setAddress(addressB);
 
 		userRepository.save(salomao);
 		userRepository.save(leonardo);

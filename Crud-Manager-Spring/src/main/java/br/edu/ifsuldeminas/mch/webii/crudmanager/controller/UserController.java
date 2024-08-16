@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import br.edu.ifsuldeminas.mch.webii.crudmanager.model.User;
+import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.AddressRepository;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.UserRepository;
 
 @Controller
@@ -19,6 +20,9 @@ public class UserController {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	AddressRepository addressRepository;
 
 	@GetMapping("/users")
 	public String listUsers(Model model) {
@@ -40,6 +44,7 @@ public class UserController {
 	@PostMapping("/users/register")
 	public String userNew(@ModelAttribute("user") User user) {
 
+		addressRepository.save(user.getAddress());
 		userRepository.save(user);
 
 		return "redirect:/users";

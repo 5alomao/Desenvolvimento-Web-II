@@ -20,6 +20,12 @@
 				class="form-control mb-4 col-4" th:field="*{email}"> <input
 				type="text" placeholder="Gênero" class="form-control mb-4 col-4"
 				th:field="*{gender}">
+				
+			<input type="hidden" id="idAddress" name="id", th:field="*{address.id}">
+			
+			<input type="text" placeholder="Logadouro" class="form-control mb-4 col-4" th:field="*{address.place}">
+			<input type="number" placeholder="Número" class="form-control mb-4 col-4" th:field="*{address.number}">
+			<input type="text" placeholder="CEP" class="form-control mb-4 col-4" th:field="*{address.zipCode}">
 
 			<button type="submit" class="btn btn-info col-2">Salvar</button>
 
