@@ -45,8 +45,8 @@ public class UserController {
 
 	@PostMapping("/users/register")
 	public String userNew(@Valid @ModelAttribute("user") User user, BindingResult err) {
-		
-		if(err.hasErrors()) {
+
+		if (err.hasErrors()) {
 			return "users_form";
 		}
 
@@ -64,11 +64,12 @@ public class UserController {
 
 		if (!userOpt.isPresent()) {
 			user = new User();
+		} else {
+			user = userOpt.get();
 		}
 
-		user = userOpt.get();
+		model.addAttribute("user", user);
 
-		model.addAttribute(user);
 		return "users_form";
 	}
 

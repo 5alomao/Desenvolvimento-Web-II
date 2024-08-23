@@ -33,13 +33,13 @@
 				
 			<input type="hidden" id="idAddress" name="id", th:field="*{address.id}">
 
-			<!--  <span class="text-danger" th:if="${#fields.hasErrors('address.place')}" th:errors="*{address.place}"></span> -->
-			<input type="text" placeholder="Logadouro" class="form-control mb-4 col-4" th:field="*{address.place}">
+			<span class="text-danger" th:if="${#fields.hasErrors('address.place')}" th:errors="*{address.place}"></span>
+			<input type="text" placeholder="Logradouro" class="form-control mb-4 col-4" th:field="*{address.place}">
 			
-			<!--  <span class="text-danger" th:if="${#fields.hasErrors('address.number')}" th:errors="*{address.number}"></span> -->
+			<span class="text-danger" th:if="${#fields.hasErrors('address.number')}" th:errors="*{address.number}"></span>
 			<input type="number" placeholder="Número" class="form-control mb-4 col-4" th:field="*{address.number}">
 			
-			<!--  <span class="text-danger" th:if="${#fields.hasErrors('address.zipCode')}" th:errors="*{address.zipCode}"></span> -->
+			<span class="text-danger" th:if="${#fields.hasErrors('address.zipCode')}" th:errors="*{address.zipCode}"></span>
 			<input type="text" placeholder="CEP" class="form-control mb-4 col-4" th:field="*{address.zipCode}">
 
 			<button type="submit" class="btn btn-info col-2">Salvar</button>

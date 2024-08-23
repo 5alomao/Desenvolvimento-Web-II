@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -37,6 +38,7 @@ public class User {
 	private String email;
 
 	@OneToOne(optional = false)
+	@Valid
 	private Address address;
 
 	public Integer getId() {

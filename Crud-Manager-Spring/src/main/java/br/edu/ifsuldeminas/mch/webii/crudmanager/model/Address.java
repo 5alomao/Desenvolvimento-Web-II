@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,13 +15,14 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-//	@NotBlank(message = "Logradouro é obrigatório.")
+	@NotBlank(message = "Logradouro é obrigatório.")
 	private String place;
 	
-//	@NotNull(message = "Número é obrigatório.")
+	@NotNull(message = "Número é obrigatório.")
+	@Digits(fraction = 0, integer = 10, message = "Número inválido.")
 	private Integer number;
 	
-//	@NotBlank(message = "CEP é obrigatório.")
+	@NotBlank(message = "CEP é obrigatório.")
 	private String zipCode;
 
 	public String getPlace() {
