@@ -6,6 +6,7 @@
 <title>Crud Manager - Usuários</title>
 </head>
 <body>
+	<div th:include="navmenu :: header"></div>
 	<div class="container my-2">
 		<h1>Usuários</h1>
 		<div>
@@ -28,7 +29,8 @@
 					<td th:text="${user.getName()}"></td>
 					<td th:text="${user.getEmail()}"></td>
 					<td th:text="${user.getGender()}"></td>
-					<td th:text="${user.getAddress().getPlace() + ', N°: ' + user.getAddress().getNumber()}"></td>
+					<td
+						th:text="${user.getAddress().getPlace() + ', N°: ' + user.getAddress().getNumber()}"></td>
 					<td><a class="btn btn-primary"
 						th:href="@{/users/update/{id}(id = ${user.getId()})}">Alterar</a>
 						<a class="btn btn-danger"

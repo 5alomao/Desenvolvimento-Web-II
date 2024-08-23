@@ -17,11 +17,11 @@ public class Address {
 
 	@NotBlank(message = "Logradouro é obrigatório.")
 	private String place;
-	
+
 	@NotNull(message = "Número é obrigatório.")
 	@Digits(fraction = 0, integer = 10, message = "Número inválido.")
 	private Integer number;
-	
+
 	@NotBlank(message = "CEP é obrigatório.")
 	private String zipCode;
 

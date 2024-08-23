@@ -9,6 +9,7 @@
 </head>
 
 <body>
+	<div th:replace="navmenu :: nav"></div>
 	<div class="container my-2">
 		<h2>Usuário</h2>
 		<form th:action="@{/users/register}" th:object="${user}" method="POST"

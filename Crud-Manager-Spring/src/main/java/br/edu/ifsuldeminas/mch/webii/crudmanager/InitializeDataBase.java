@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import br.edu.ifsuldeminas.mch.webii.crudmanager.model.Accommodation;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.model.Address;
+import br.edu.ifsuldeminas.mch.webii.crudmanager.model.TravelSite;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.model.User;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.AddressRepository;
+import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.TravelSiteRepository;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.UserRepository;
 import jakarta.transaction.Transactional;
 
@@ -19,6 +22,9 @@ public class InitializeDataBase implements CommandLineRunner {
 
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private TravelSiteRepository travelSiteRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -45,12 +51,24 @@ public class InitializeDataBase implements CommandLineRunner {
 		addressRepository.save(addressS);
 		addressRepository.save(addressB);
 		userRepository.flush();
-		
+
 		salomao.setAddress(addressS);
 		leonardo.setAddress(addressB);
 
+		TravelSite travelSite = new TravelSite();
+		travelSite.setName("Trivago");
+		travelSite.setUrl("trivago.com.br");
+		travelSite.setCategory("Viagens, Turismo, Sexo");
+		travelSite.setRating(4.7);
+
+		Accommodation accommodation = new Accommodation();
+		accommodation.setName("Casa na Praia Copacabana");
+		accommodation.setPrice(124.43);
+		
 		userRepository.save(salomao);
 		userRepository.save(leonardo);
+		travelSiteRepository.save(travelSite);
+		
 
 	}
 

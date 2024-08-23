@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="cabecalho :: head"></div>
+
+<title>Crud Manager - Sites de Viagens</title>
+</head>
+<body>
+	<div th:include="navmenu :: header"></div>
+	<div class="container my-2">
+		<h1>Sites de Viagens</h1>
+		<div>
+			<a th:href="@{travel-sites/form}"
+				class="btn btn-primary btn-sm mb-3 float-right"> Adicionar Site
+				de Viagem </a>
+		</div>
+		<table class="table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>URL</th>
+					<th>Categoria</th>
+					<th>Classificação</th>
+					<th>Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="travelSite : ${travelSites}">
+					<td th:text="${travelSite.getName()}"></td>
+					<td th:text="${travelSite.getUrl()}"></td>
+					<td th:text="${travelSite.getCategory()}"></td>
+					<td th:text="${travelSite.getRating()}"></td>
+					<td><a class="btn btn-primary"
+						th:href="@{/travel-sites/update/{id}(id = ${travelSite.getId()})}">Alterar</a>
+						<a class="btn btn-danger"
+						th:href="@{/travel-sites/delete/{id}(id = ${travelSite.getId()})}">Excluir</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

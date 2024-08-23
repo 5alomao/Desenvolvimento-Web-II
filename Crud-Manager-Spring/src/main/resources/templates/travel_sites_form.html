@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<div th:replace="cabecalho :: head"></div>
+<title>Crud Manager - Form Site de Viagem</title>
+</head>
+<body>
+	<div class="container my-2">
+		<h2>Site de Viagem</h2>
+		<form th:action="@{/travel-sites/register}" th:object="${travelSite}"
+			method="POST" action="#">
+
+			<input type="hidden" id="id" th:field="*{id}">
+			
+			<span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+			<input
+				type="text" placeholder="Nome do site" class="form-control mb-4 col-4"
+				th:field="*{name}"
+				> 
+				
+			<span class="text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></span>
+			<input
+				type="text" placeholder="URL do site" class="form-control mb-4 col-4"
+				th:field="*{url}">
+				
+			<span class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+			<input
+				type="text" placeholder="Categoria do site" class="form-control mb-4 col-4"
+				th:field="*{category}"
+				>
+				
+			<span class="text-danger" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></span>
+			<input type="number" step="0.01" placeholder="Classificação do site" class="form-control mb-4 col-4" th:field="*{rating}">
+			
+			<button type="submit" class="btn btn-info col-2">Salvar</button>
+		</form>
+		
+		<hr>
+		<a th:href="@{/travel-sites}">Sites de Viagens</a>
+	</div>
+</body>
+</html>

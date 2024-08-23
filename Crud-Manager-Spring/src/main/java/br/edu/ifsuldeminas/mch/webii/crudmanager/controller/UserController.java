@@ -21,10 +21,10 @@ import jakarta.validation.Valid;
 public class UserController {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	AddressRepository addressRepository;
+	private AddressRepository addressRepository;
 
 	@GetMapping("/users")
 	public String listUsers(Model model) {
