@@ -6,6 +6,7 @@
 <title>Crud Manager - Form Site de Viagem</title>
 </head>
 <body>
+	<div th:include="navmenu :: header"></div>
 	<div class="container my-2">
 		<h2>Site de Viagem</h2>
 		<form th:action="@{/travel-sites/register}" th:object="${travelSite}"

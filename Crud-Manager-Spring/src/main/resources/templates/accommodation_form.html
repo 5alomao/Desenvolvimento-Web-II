@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<div th:replace="cabecalho :: head"></div>
+<title>Crud Manager - Form Hospedagem</title>
+</head>
+<body>
+	<div th:include="navmenu :: header"></div>
+	<div class="container my-2">
+		<h2>Hospedagem</h2>
+		<form th:action="@{/accommodations/register}" th:object="${accommodation}"
+			method="POST" action="#">
+
+			<input type="hidden" id="id" th:field="*{id}">
+			
+			<span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+			<input
+				type="text" placeholder="Nome da hospedagem" class="form-control mb-4 col-4"
+				th:field="*{name}"
+				> 
+				
+			<span class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></span>
+			<input
+				type="text" placeholder="Tipo da hospedagem" class="form-control mb-4 col-4"
+				th:field="*{type}">
+				
+			<span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+			<input
+				type="number" step="0.01" placeholder="Preço da hospedagem por dia" class="form-control mb-4 col-4"
+				th:field="*{price}"
+				required
+				>
+				
+			<span class="text-danger" th:if="${#fields.hasErrors('amenities')}" th:errors="*{amenities}"></span>
+			<input type="text" placeholder="Comodidades da hospedagem" class="form-control mb-4 col-4" th:field="*{amenities}">
+			
+			<span class="text-danger" th:if="${#fields.hasErrors('travelSite')}" th:errors="*{travelSite}"></span>
+			<select name="travelSite" class="form-control mb-4 col-4" th:field="*{travelSite}">
+    			<option value="" th:text="'Selecione um Site de Viagem'">Selecione um Site de Viagem</option>
+    			<th:block th:each="site : ${travelSites}">
+        			<option th:value="${site.id}" th:text="${site.name}" th:selected="${site.id == accommodation.travelSite?.id}"></option>
+    			</th:block>
+			</select>
+
+			
+			<button type="submit" class="btn btn-info col-2">Salvar</button>
+		</form>
+		
+		<hr>
+		<a th:href="@{/accommodations}">Hospedagens</a>
+	</div>
+</body>
+</html>

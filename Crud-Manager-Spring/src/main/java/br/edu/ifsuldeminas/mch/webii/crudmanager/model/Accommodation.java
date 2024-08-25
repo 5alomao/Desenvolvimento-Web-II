@@ -1,14 +1,13 @@
 package br.edu.ifsuldeminas.mch.webii.crudmanager.model;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -33,14 +32,16 @@ public class Accommodation {
 	private String type;
 
 	@NotNull(message = "O preço da hospedagem é obrigatório.")
-	@Digits(integer = 10, fraction = 2, message = "Preço inválido.")
-	private BigDecimal price;
+	@DecimalMin(value = "0.01", inclusive = true, message = "O preço deve ser maior do que R$0,00")
+	private double price;
 
 	@NotBlank(message = "As comodidades são obrigatórias.")
 	private String amenities;
 
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "travel_site_id")
 	@Valid
+	@NotNull(message = "O site de viagem é obrigatório.")
 	private TravelSite travelSite;
 
 	public Integer getId() {
@@ -75,11 +76,11 @@ public class Accommodation {
 		this.type = type;
 	}
 
-	public BigDecimal getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 

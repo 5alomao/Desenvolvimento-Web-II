@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.edu.ifsuldeminas.mch.webii.crudmanager.model.User;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.AddressRepository;
@@ -18,6 +19,7 @@ import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.UserRepository;
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
@@ -26,24 +28,24 @@ public class UserController {
 	@Autowired
 	private AddressRepository addressRepository;
 
-	@GetMapping("/users")
+	@GetMapping
 	public String listUsers(Model model) {
 
 		List<User> users = userRepository.findAll();
 
 		model.addAttribute("users", users);
 
-		return "index";
+		return "users_page";
 	}
 
-	@GetMapping("/users/form")
+	@GetMapping("/form")
 	public String userForm(@ModelAttribute("user") User user) {
 		// ESTUDAR BINDING DO SPRING
 
 		return "users_form";
 	}
 
-	@PostMapping("/users/register")
+	@PostMapping("/register")
 	public String userNew(@Valid @ModelAttribute("user") User user, BindingResult err) {
 
 		if (err.hasErrors()) {
@@ -56,7 +58,7 @@ public class UserController {
 		return "redirect:/users";
 	}
 
-	@GetMapping("/users/update/{id}")
+	@GetMapping("/update/{id}")
 	public String userUpdate(@PathVariable("id") Integer id, Model model) {
 
 		Optional<User> userOpt = userRepository.findById(id);
@@ -73,7 +75,7 @@ public class UserController {
 		return "users_form";
 	}
 
-	@GetMapping("/users/delete/{id}")
+	@GetMapping("/delete/{id}")
 	public String userDelete(@PathVariable("id") Integer id) {
 
 		userRepository.delete(new User(id));

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.edu.ifsuldeminas.mch.webii.crudmanager.model.Accommodation;
+import br.edu.ifsuldeminas.mch.webii.crudmanager.model.TravelSite;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.AccommodationRepository;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.TravelSiteRepository;
 import jakarta.validation.Valid;
@@ -24,6 +25,9 @@ public class AccommodationController {
 
 	@Autowired
 	private AccommodationRepository accommodationRepository;
+
+	@Autowired
+	private TravelSiteRepository travelSiteRepository;
 
 	@GetMapping
 	public String listAccommodations(Model model) {
@@ -36,17 +40,22 @@ public class AccommodationController {
 	}
 
 	@GetMapping("/form")
-	public String accommodationForm(@ModelAttribute("accommodation") Accommodation accommodation) {
+	public String accommodationForm(@ModelAttribute("accommodation") Accommodation accommodation, Model model) {
 		// ESTUDAR BINDING DO SPRING
+
+		List<TravelSite> travelSites = travelSiteRepository.findAll();
+		model.addAttribute("travelSites", travelSites);
 
 		return "accommodation_form";
 	}
 
 	@PostMapping("/register")
 	public String accommodationNew(@Valid @ModelAttribute("accommodation") Accommodation accommodation,
-			BindingResult err) {
+			BindingResult err, Model model) {
 
 		if (err.hasErrors()) {
+			List<TravelSite> travelSites = travelSiteRepository.findAll();
+			model.addAttribute("travelSites", travelSites);
 			return "accommodation_form";
 		}
 
@@ -67,7 +76,9 @@ public class AccommodationController {
 			accommodation = accommodationOptional.get();
 		}
 
+		List<TravelSite> travelSites = travelSiteRepository.findAll();
 		model.addAttribute("accommodation", accommodation);
+		model.addAttribute("travelSites", travelSites);
 
 		return "accommodation_form";
 	}
