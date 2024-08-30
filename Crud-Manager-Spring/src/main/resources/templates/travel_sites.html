@@ -14,6 +14,11 @@
 				class="btn btn-primary btn-sm mb-3 float-right"> Adicionar Site
 				de Viagem </a>
 		</div>
+
+		<div th:if="${errorMessage}" class="alert alert-danger fade show"
+			role="alert">
+			<span th:text="${errorMessage}"></span>
+		</div>
 		<table class="table table-striped table-responsive-md">
 			<thead>
 				<tr>

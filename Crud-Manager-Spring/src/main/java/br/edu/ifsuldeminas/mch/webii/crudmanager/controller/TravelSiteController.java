@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.edu.ifsuldeminas.mch.webii.crudmanager.model.TravelSite;
+import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.AccommodationRepository;
 import br.edu.ifsuldeminas.mch.webii.crudmanager.repo.TravelSiteRepository;
 import jakarta.validation.Valid;
 
@@ -23,6 +24,9 @@ public class TravelSiteController {
 
 	@Autowired
 	private TravelSiteRepository travelSiteRepository;
+
+	@Autowired
+	private AccommodationRepository accommodationRepository;
 
 	@GetMapping
 	public String listTravelSites(Model model) {
@@ -71,7 +75,14 @@ public class TravelSiteController {
 	}
 
 	@GetMapping("/delete/{id}")
-	public String deleteTravelSite(@PathVariable("id") Integer id) {
+	public String deleteTravelSite(@PathVariable("id") Integer id, Model model) {
+
+		if (accommodationRepository.existsByTravelSiteId(id)) {
+			Optional<TravelSite> travelSite = travelSiteRepository.findById(id);
+			model.addAttribute("errorMessage", "O Site de Viagens: " + travelSite.get().getName()
+					+ " não pode ser removido pois está em uso em uma ou mais hospedagens.");
+			return listTravelSites(model);
+		}
 
 		travelSiteRepository.delete(new TravelSite(id));
 
